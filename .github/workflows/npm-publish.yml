@@ -22,6 +22,8 @@ jobs:
       - name: Extract Release Version
         id: extract_version
         run: echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+      - name: Debugging
+        run: ls -la /home/runner/work/get-all/get-all/
       - name: Set Version in package.json
         run: |
           cd /home/runner/work/get-all/get-all/
