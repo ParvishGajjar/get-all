@@ -45,7 +45,7 @@ const extractLibraries = (fileNames, fileContent) => {
             if (matches) {
                 const [, packageName] = matches;
                 const scopedPackageMatches = packageName.match(/@[^'"]+\/[^'"]+/);
-                return scopedPackageMatches ? scopedPackageMatches[0].split('/')[0]+'/'+scopedPackageMatches[0].split('/')[1] : packageName;
+                return scopedPackageMatches ? scopedPackageMatches[0].split('/')[0] + '/' + scopedPackageMatches[0].split('/')[1] : packageName;
             }
             // Handle default imports like import fs from 'fs';
             const defaultImportMatches = statement.match(/import\s+([\w_$]+)\s+from\s+['"](@?[^'"]+)['"]/);
@@ -59,16 +59,17 @@ const extractLibraries = (fileNames, fileContent) => {
         // Handle default require like const fs=require('fs');
         const extractFromRequire = (statement) => {
             const matches = statement.match(/(?:const|let|var)\s+\w+\s*=\s*require\s*\(['"](@?[^'"]+)['"]\)/);
-            if(matches && matches[1].includes('@')){
-                matches[1]=matches[1].split('/')[0]+'/'+matches[1].split('/')[1]
+            if (matches && matches[1].includes('@')) {
+                matches[1] = matches[1].split('/')[0] + '/' + matches[1].split('/')[1]
             }
             return matches ? matches[1] : null;
         };
 
         const librariesFromImport = importStatements.map(extractFromImport);
         const librariesFromRequest = requireStatements.map(extractFromRequire);
-       
-        const uniqueLibraries = [...new Set([...librariesFromImport, ...librariesFromRequest].filter(Boolean))];
+
+        const uniqueLibraries = [...new Set([...librariesFromImport, ...librariesFromRequest].filter(Boolean))]
+            .filter(library => !library.startsWith('.'));
         console.log(`Found Libraries for ${fileNames}: ${uniqueLibraries}`)
         return uniqueLibraries;
     } catch (error) {
