@@ -21,7 +21,9 @@ jobs:
         id: extract_version
         run: echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
       - name: Set Version in package.json
-        run: npm version $RELEASE_VERSION
+        run: |
+          cd /home/runner/work/get-all/get-all/
+          npm version $RELEASE_VERSION
 
   publish-npm:
     needs: build
