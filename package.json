@@ -1,5 +1,5 @@
 {
-  "name": "get-all",
+  "name": "@parvishgajjar/get-all",
   "version": "1.0.1",
   "description": "Get all modules that you are trying to import/request in your files",
   "main": "index.js",
@@ -8,6 +8,9 @@
     "start": "node index",
     "deploy": "npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
