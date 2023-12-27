@@ -29,7 +29,7 @@ const getJavaScriptFiles = (baseDir) => {
         output = output.filter((file) => file.endsWith(".js") || file.endsWith(".jsx") || file.endsWith(".tsx"));
         return output;
     } catch (error) {
-        console.error("Error reading directory:", error.message);
+        console.error("Error reading directory: ", error.message);
         return [];
     }
 };
@@ -59,7 +59,7 @@ const extractLibraries = (fileNames, fileContent) => {
         // Handle default require like const fs=require('fs');
         const extractFromRequire = (statement) => {
             const matches = statement.match(/(?:const|let|var)\s+\w+\s*=\s*require\s*\(['"](@?[^'"]+)['"]\)/);
-            if(matches[1].contains('@')){
+            if(matches && matches[1].includes('@')){
                 matches[1]=matches[1].split('/')[0]+'/'+matches[1].split('/')[1]
             }
             return matches ? matches[1] : null;
@@ -67,10 +67,12 @@ const extractLibraries = (fileNames, fileContent) => {
 
         const librariesFromImport = importStatements.map(extractFromImport);
         const librariesFromRequest = requireStatements.map(extractFromRequire);
-        console.log(`Found Libraries for ${fileNames}: ${[...librariesFromImport, ...librariesFromRequest].filter(Boolean)}`)
-        return [...librariesFromImport, ...librariesFromRequest].filter(Boolean);
+       
+        const uniqueLibraries = [...new Set([...librariesFromImport, ...librariesFromRequest].filter(Boolean))];
+        console.log(`Found Libraries for ${fileNames}: ${uniqueLibraries}`)
+        return uniqueLibraries;
     } catch (error) {
-        console.error("Error extracting libraries:", error.message);
+        console.error("Error extracting libraries: ", error.message);
         return [];
     }
 };
@@ -82,7 +84,7 @@ const getExistingDependencies = () => {
         const packageJson = JSON.parse(packageJsonContent);
         return Object.keys(packageJson.dependencies || {}).concat(Object.keys(packageJson.devDependencies || {}));
     } catch (error) {
-        console.error("Error reading package.json:", error.message);
+        console.error("Error reading package.json: ", error.message);
         return [];
     }
 };
@@ -102,13 +104,13 @@ const installLibraries = (libraries) => {
     try {
         const installCommand = constructInstallCommand(libraries);
         if (installCommand) {
-            console.log(`Running command: ${installCommand}`);
+            console.log(`\nRunning command: ${installCommand}`);
             execSync(installCommand, { stdio: "inherit" });
         } else {
-            console.log("No new libraries to install.");
+            console.log("\nNo new libraries to install.\n");
         }
     } catch (error) {
-        console.error("Error installing libraries:", error.message);
+        console.error("Error installing libraries: ", error.message);
     }
 };
 
@@ -117,7 +119,7 @@ const main = () => {
     try {
         const fileNames = getJavaScriptFiles("./");
         if (fileNames.length === 0) {
-            console.log("No JavaScript files found.");
+            console.log("\nNo JavaScript files found.\n");
             return;
         }
 
@@ -130,12 +132,12 @@ const main = () => {
         });
 
         if (foundLibraries.length === 0) {
-            console.log("No new libraries to install.");
+            console.log("\nNo new libraries to install.\n");
         } else {
             installLibraries(foundLibraries);
         }
     } catch (error) {
-        console.error("Error processing files:", error.message);
+        console.error("Error processing files: ", error.message);
     }
 };
 
