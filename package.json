@@ -1,6 +1,6 @@
 {
   "name": "get-all",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get all modules that you are trying to import/request in your files",
   "main": "index.js",
   "type": "module",
