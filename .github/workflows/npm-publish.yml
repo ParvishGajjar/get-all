@@ -25,7 +25,15 @@ jobs:
           node-version: 16
       - name: Extract Release Version
         id: extract_version
-        run: echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Fetch the latest release tag when triggered manually
+            RELEASE_VERSION=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)
+          else
+            # Use the release tag from the GitHub event
+            RELEASE_VERSION=${{ github.event.release.tag_name }}
+          fi
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
       - name: Debugging
         run: ls -la /home/runner/work/get-all/get-all/
       - name: Set Version in package.json
