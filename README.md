@@ -41,7 +41,45 @@ Navigate to your project's root directory and run:
 ```bash
 get-all
 ```
-This will display a list of modules detected in your project along with suggestions to install any new dependencies.
+This will display a list of modules detected in your project along with installation of any new dependencies.
+
+## Scripts
+
+*start*, *dev*, *build* are normal terminologies used in scripts to start the main application and execute a bunch of other commands in line pre-configured
+
+**File: package.json**
+```json
+"scripts": {
+  "start": "node index.js",
+  "lint": "eslint .",
+  "test": "jest",
+  "build": "webpack"
+}
+```
+
+Here, "start: node index.js" in scripts Executes the main application file index.js when we run following command in command prompt,
+
+```bash
+../your-project> npm start
+```
+
+To integrate get-all into the "start" script and automatically find and install new dependencies when running npm start, you can update your "scripts" section in package.json as follows:
+
+```json
+"scripts": {
+  "start": "get-all && node index.js",
+  "lint": "eslint .",
+  "test": "jest",
+  "build": "webpack"
+}
+```
+In this setup, when users run npm start, it will first execute get-all to find and install new dependencies and then it will run the main application with node index.js.
+
+Run following command to finally run your app through command-prompt:
+
+```bash
+../your-project> npm start
+```
 
 ## Example
 Suppose you have the following file structure:
@@ -68,10 +106,6 @@ Running command: npm install lodash axios
 ```
 
 This indicates the modules found and suggests running npm install lodash axios to install the missing dependencies.
-
-## Scripts
-
-- start: Execute the main function (node index.js).
 
 ## Contributing
 
