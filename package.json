@@ -1,6 +1,6 @@
 {
   "name": "@parvishgajjar/get-all",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Get all modules that you are trying to import/request in your files",
   "main": "index.js",
   "type": "module",
