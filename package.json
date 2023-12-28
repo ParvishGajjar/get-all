@@ -31,13 +31,5 @@
   "bugs": {
     "url": "https://github.com/ParvishGajjar/get-all/issues"
   },
-  "homepage": "https://github.com/ParvishGajjar/get-all#readme",
-  "dependencies": {
-    "@mui/material": "^5.15.2",
-    "child_process": "^1.0.2",
-    "express": "^4.18.2",
-    "fs": "^0.0.1-security",
-    "react-router-dom": "^6.21.1",
-    "recharts": "^2.10.3"
-  }
+  "homepage": "https://github.com/ParvishGajjar/get-all#readme"
 }
